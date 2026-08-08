@@ -13,10 +13,14 @@ import { VisitContact } from '@/components/VisitContact';
 import { Footer } from '@/components/Footer';
 import { AdminDashboard } from '@/components/AdminDashboard';
 import { CartDrawer } from '@/components/CartDrawer';
+import { PrivacyPolicy } from '@/components/PrivacyPolicy';
+import { Terms } from '@/components/Terms';
 
 function AppContent() {
   const { totalItems, setIsOpen } = useCart();
   const [, setCheckoutOpen] = useState(false);
+  const [privacyOpen, setPrivacyOpen] = useState(false);
+  const [termsOpen, setTermsOpen] = useState(false);
 
   // Initialize analytics automatically if user previously consented
   useEffect(() => {
@@ -62,8 +66,15 @@ function AppContent() {
         <VisitContact />
         <AdminDashboard />
       </main>
-      <Footer />
+
+      <Footer
+        onOpenPrivacy={() => setPrivacyOpen(true)}
+        onOpenTerms={() => setTermsOpen(true)}
+      />
+
       <CartDrawer onCheckout={handleCheckout} />
+      <PrivacyPolicy isOpen={privacyOpen} onClose={() => setPrivacyOpen(false)} />
+      <Terms isOpen={termsOpen} onClose={() => setTermsOpen(false)} />
 
       <CookieConsent
         location="bottom"

@@ -1,6 +1,11 @@
 import { Coffee, Globe, Share2, MessageCircle } from 'lucide-react';
 
-export function Footer() {
+interface FooterProps {
+  onOpenPrivacy?: () => void;
+  onOpenTerms?: () => void;
+}
+
+export function Footer({ onOpenPrivacy, onOpenTerms }: FooterProps) {
   return (
     <footer className="border-t border-cream-200/10 bg-espresso-950 py-14">
       <div className="mx-auto max-w-7xl px-6">
@@ -30,6 +35,18 @@ export function Footer() {
             <a href="#order" className="transition-colors hover:text-gold-400">Order</a>
             <a href="#visit" className="transition-colors hover:text-gold-400">Visit</a>
             <a href="#admin" className="transition-colors hover:text-gold-400">Admin</a>
+            <button
+              onClick={onOpenPrivacy}
+              className="transition-colors hover:text-gold-400 focus:outline-none"
+            >
+              Privacy Policy
+            </button>
+            <button
+              onClick={onOpenTerms}
+              className="transition-colors hover:text-gold-400 focus:outline-none"
+            >
+              Terms of Service
+            </button>
           </nav>
         </div>
 
