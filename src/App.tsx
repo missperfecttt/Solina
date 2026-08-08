@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import CookieConsent, { getCookieConsentValue } from 'react-cookie-consent';
+import { initGoogleAnalytics } from '@/lib/analytics';
 import { CartProvider, useCart } from '@/lib/cart';
 import { Navbar } from '@/components/Navbar';
 import { Hero } from '@/components/Hero';
@@ -14,7 +16,14 @@ import { CartDrawer } from '@/components/CartDrawer';
 
 function AppContent() {
   const { totalItems, setIsOpen } = useCart();
-  const [checkoutOpen, setCheckoutOpen] = useState(false);
+  const [, setCheckoutOpen] = useState(false);
+
+  // Initialize analytics automatically if user previously consented
+  useEffect(() => {
+    if (getCookieConsentValue('SolinaConsent') === 'true') {
+      initGoogleAnalytics();
+    }
+  }, []);
 
   // Close cart when opening checkout
   const handleCheckout = () => {
@@ -55,6 +64,22 @@ function AppContent() {
       </main>
       <Footer />
       <CartDrawer onCheckout={handleCheckout} />
+
+      <CookieConsent
+        location="bottom"
+        cookieName="SolinaConsent"
+        buttonText="Accept All"
+        declineButtonText="Essential Only"
+        enableDeclineButton
+        onAccept={() => {
+          initGoogleAnalytics();
+        }}
+        style={{ background: '#1c1917', color: '#f5f5f4', zIndex: 1000 }}
+        buttonStyle={{ background: '#d97706', color: '#ffffff', borderRadius: '0.375rem', fontWeight: 'bold' }}
+        declineButtonStyle={{ background: '#44403c', color: '#f5f5f4', borderRadius: '0.375rem' }}
+      >
+        We use cookies to analyze site traffic and enhance your browsing experience.
+      </CookieConsent>
     </div>
   );
 }
